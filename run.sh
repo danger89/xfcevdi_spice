@@ -1,12 +1,12 @@
 #!/bin/bash
 SPICE_RES=${SPICE_RES:-"1280x960"}
-SPICE_LOCAL=${SPICE_LOCAL:-"en_EN.UTF-8"}
+SPICE_LOCAL=${SPICE_LOCAL:-"en_US.UTF-8"}
 TIMEZONE=${TIMEZONE:-"Europe/Paris"}
 SPICE_USER=${SPICE_USER:-"user"}
 SPICE_UID=${SPICE_UID:-"1000"}
 SPICE_GID=${SPICE_GID:-"1000"}
 SPICE_PASSWD=${SPICE_PASSWD:-"password"}
-SPICE_KB=`echo "$SPICE_LOCAL" | awk -F"_" '{print $1}'` 
+SPICE_KB="US"
 SUDO=${SUDO:-"user"}
 locale-gen $SPICE_LOCAL
 echo $TIMEZONE > /etc/timezone
