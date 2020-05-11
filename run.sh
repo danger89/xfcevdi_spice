@@ -6,7 +6,7 @@ SPICE_USER=${SPICE_USER:-"user"}
 SPICE_UID=${SPICE_UID:-"1000"}
 SPICE_GID=${SPICE_GID:-"1000"}
 SPICE_PASSWD=${SPICE_PASSWD:-"password"}
-SPICE_KB=`echo "$SPICE_LOCAL" | awk -F"_" '{print $1}'` 
+SPICE_KB="us"
 SUDO=${SUDO:-"user"}
 locale-gen $SPICE_LOCAL
 echo $TIMEZONE > /etc/timezone
