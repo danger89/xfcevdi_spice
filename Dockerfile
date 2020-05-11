@@ -8,10 +8,10 @@ RUN	DEBIAN_FRONTEND=noninteractive apt-get -y install xserver-xspice x11-xserver
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y --no-install-recommends install xfce4
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y --no-install-recommends install tango-icon-theme xfce4-notifyd xfce4-terminal xfce4-artwork xubuntu-icon-theme
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y --no-install-recommends install firefox
-ADD	spiceqxl.xorg.conf /etc/X11/	   
-ADD	resolution.desktop /etc/xdg/autostart/
-ADD	keyboard.desktop /etc/xdg/autostart/
-ADD run.sh	/root/
+COPY spiceqxl.xorg.conf /etc/X11/	   
+COPY resolution.desktop /etc/xdg/autostart/
+COPY keyboard.desktop /etc/xdg/autostart/
+COPY run.sh	/root/
 VOLUME ["/home"]
 EXPOSE 5900
 CMD /root/run.sh
