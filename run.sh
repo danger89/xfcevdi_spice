@@ -45,7 +45,8 @@ sleep 1
 
 # Start DBUS with XFCE4 session
 # TODO: Later add also > /dev/null
-su user -c "DISPLAY=:1.0 dbus-launch --exit-with-session xfce4-session" & /usr/bin/bash
+su $SPICE_USER -c "DISPLAY=$DISPLAY dbus-launch --exit-with-session xfce4-session"
+
 
 ### disable screensaver and power management
 # xset -dpms &
