@@ -33,9 +33,10 @@ cd /app/spice-html5
 mv spice.html index.html 2> /dev/null
 python3 -m http.server 8080 > /dev/null 2>&1 &
 
-cd /home/$SPICE_USER
+# Start dbus (is this the system dbus? and dbus-launch the session debug? Maybe wise to also use EXPORT blabla at the top of this script)
+#service dbus start
 
-# TODO: service dbus start
+cd /home/$SPICE_USER
 
 # Pulseaudio (https://github.com/ikreymer/spice-chrome/blob/master/entry_point.sh)
 mkdir /tmp/audio_fifo
@@ -58,7 +59,6 @@ websockify 5959 localhost:5900 > /dev/null 2>&1 &
 # Start DBUS with XFCE4 session
 # TODO: Later add also > /dev/null
 su $SPICE_USER -c "DISPLAY=$DISPLAY dbus-launch --exit-with-session xfce4-session"
-
 
 ### disable screensaver and power management
 # xset -dpms &

@@ -5,6 +5,8 @@ LABEL maintainer="melroy@melroy.org"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1.0
+# TODO: System dbus or session dbus? We need sound working..
+# ENV DBUS_SYSTEM_BUS_ADDRESS='unix:path=/var/host/dbus/system_bus_socket'
 
 WORKDIR /app
 
