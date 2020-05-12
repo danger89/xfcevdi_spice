@@ -26,14 +26,13 @@ if [ "$SUDO" != "NO" ]; then
         sed -i "s/^\(sudo:.*\)/\1$SPICE_USER/" /etc/group
 fi
 chmod a+x /tmp/xfce_settings.sh
+
+# Serve Spice client5 on port 8080
+cd /app/spice-html5
+mv spice.html index.html 2> /dev/null
+python3 -m http.server 8080 > /dev/null 2>&1 &
+
 cd /home/$SPICE_USER
-
-# TODO:
-#  1. Add script to /root/
-#  2. Add autostart to /etc/xdg/autostart (pointing to that script)
-
-# cp -rf /root/terminalrc /home/$SPICE_USER/.config/xfce4/terminal/
-#cp -rf /root/xsettings.xml /home/$SPICE_USER/.config/xfce4/xfconf/xfce-perchannel-xml/
 
 # TODO: service dbus start
 
@@ -52,6 +51,8 @@ echo "load-module module-pipe-sink sink_name=fifo_output file=$FIFO format=s16 r
 Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 
 sleep 1
+
+websockify 5959 localhost:5900 > /dev/null 2>&1 &
 
 # Start DBUS with XFCE4 session
 # TODO: Later add also > /dev/null

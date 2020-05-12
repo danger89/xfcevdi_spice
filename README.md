@@ -15,15 +15,19 @@ This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the o
 
 ## Usage
 
-`docker run -p 5900:5900 danger89/xfcevdi:1.0`
+Run VDI with Spice port (port 5900), HTTP server (8080) with websockify (5959):
+
+`docker run -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
+
+*Note:* If you won't use the Spice HTML5 client, port `5900` would be sufficient enough.
 
 Or run with terminal access open:
 
-`docker run -itp 5900:5900 danger89/xfcevdi:1.0`
+`docker run -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
 
 If you username locally is `myusername` with UID `1000` and you want to map your /home/myusername in Docker, try:
 
-`docker run -p 5900:5900 -e SPICE_USER=myusername -e SPICE_UID=1000 -v /home/myusername:/home/myusername -e SPICE_PASSWD="azerty" -e SPICE_LOCAL="fr_FR.UTF-8" -e SPICE_RES="1366x768" danger89/xfcevdi:1.0`
+`docker run -p 5900:5900 -p 8080:8080 -p 5959:5959 -e SPICE_USER=myusername -e SPICE_UID=1000 -v /home/myusername:/home/myusername -e SPICE_PASSWD="azerty" -e SPICE_LOCAL="fr_FR.UTF-8" -e SPICE_RES="1366x768" danger89/xfcevdi:1.0`
 
 ### Clients
 
@@ -32,6 +36,8 @@ There are several Spice clients availible.
 Either use on the command line: `remote-viewer spice://localhost:5900`
 
 Or you could use an application like: `Remmina`.
+
+Or use the Spice HTML5 client in your browser, go to: `http://localhost:8080`
 
 **Note:** The default username is `user`, with the password: `password`.
 
