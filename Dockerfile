@@ -1,4 +1,4 @@
-# Xubuntu-Desktop in Spice Docker
+# Xubuntu Desktop with SPICE
 FROM ubuntu:focal
 
 LABEL maintainer="melroy@melroy.org"
