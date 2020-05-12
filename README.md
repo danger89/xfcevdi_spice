@@ -1,35 +1,37 @@
-## DockerSpiceLxde
+# XFCE VDI (using SPICE)
 
-This repository contains **Dockerfile** of [Ubuntu Desktop (Xfce4)](http://xfce.org/) for [Docker](https://www.docker.com/)'s
+This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the open-source [Spice protocol](https://en.wikipedia.org/wiki/Simple_Protocol_for_Independent_Computing_Environments).
 
+## Base Docker Image
 
-### Base Docker Image
+* [ubuntu:focal](https://registry.hub.docker.com/_/ubuntu/)
 
-* [ubuntu:14.04](https://registry.hub.docker.com/_/ubuntu/)
-
-
-### Installation
+## Installation
 
 1. Install [Docker](https://www.docker.com/).
+2. Pull the images from Dockerhub directly: `docker pull TODO....`
 
-2. Download [automated build](https://registry.hub.docker.com/u/gauthierc/dockerspicexfce4/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull gauthierc/dockerspicexfce4`
+   (alternatively, you could build the image locally via: `docker build --tag vdi:1.0 .`)
 
-   (alternatively, you can build an image from Dockerfile: `docker build -t="gauthierc/dockerspicexfce4" github.com/gauthierc/DockerSpiceXfce4`)
+## Usage
 
+`docker run -p 5900:5900 vdi:1.0`
 
-### Usage
+Or with terminal access:
 
+`docker run -itp 5900:5900 vdi:1.0`
 
-	docker run -p 5900:5900 gauthierc/dockerspicexfce4
+If you username locally is `myusername` with UID `1000` and you want to map your /home/myusername in Docker, try:
 
-If you local user is 'myusername' and your uid is '1000' and you want map your /home/myusername in Docker:
+`docker run -p 5900:5900 -e SPICE_USER=myusername -e SPICE_UID=1000 -v /home/myusername:/home/myusername -e SPICE_PASSWD="azerty" -e SPICE_LOCAL="fr_FR.UTF-8" -e SPICE_RES="1366x768" vdi:1.0`
 
+### Clients
 
-	docker run -p 5900:5900 -e SPICE_USER=myusername -e SPICE_UID=1000 -v /home/myusername:/home/myusername -e SPICE_PASSWD="azerty" -e SPICE_LOCAL="fr_FR.UTF-8" -e SPICE_RES="1366x768" gauthierc/dockerspicexfce4
+There are several Spice clients availible.
 
-Connect via Spice client 
-	
-	remote-viewer spice://localhost:5900
+Either use: `remote-viewer spice://localhost:5900`
 
-The default password is 'password'.
+Or use `Remmina` application.
+
+**Note:** The default username is `user`, with the password: `password`.
 
