@@ -21,11 +21,12 @@ update-locale LANG=$SPICE_LOCAL
 sed -i "s/XKBLAYOUT=.*/XKBLAYOUT=\"$SPICE_KB\"/" /etc/default/keyboard
 sed -i "s/SPICE_KB/$SPICE_KB/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
+sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfceboot.desktop
 # add sudo group to user
 if [ "$SUDO" != "NO" ]; then
         sed -i "s/^\(sudo:.*\)/\1$SPICE_USER/" /etc/group
 fi
-chmod a+x /tmp/xfce_settings.sh
+chmod a+x /app/xfce_settings.sh
 
 # Serve Spice client5 on port 8080
 cd /app/spice-html5

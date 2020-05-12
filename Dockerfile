@@ -30,7 +30,8 @@ COPY ./configs/spiceqxl.xorg.conf /etc/X11/
 COPY ./configs/resolution.desktop /etc/xdg/autostart/
 COPY ./configs/keyboard.desktop /etc/xdg/autostart/
 COPY ./configs/xfceboot.desktop /etc/xdg/autostart/
-COPY ./xfce_settings.sh /tmp/
+COPY ./configs/terminalrc ./
+COPY ./xfce_settings.sh ./
 COPY ./run.sh ./
 
 EXPOSE 5900 5959 8080

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=xfceboot
-Exec=/tmp/xfce_settings.sh
+Exec=/app/xfce_settings.sh SPICE_USER
 NoDisplay=true
 Terminal=false
 Categories=
