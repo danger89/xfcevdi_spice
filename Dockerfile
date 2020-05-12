@@ -9,9 +9,14 @@ ENV DISPLAY=:1.0
 # TODO: Add to install: spice-html5
 RUN apt-get update && apt-get -y install software-properties-common
 RUN apt-get upgrade -y
-RUN apt-get -y install xserver-xspice x11-xserver-utils dbus-x11 locales apt-utils at-spi2-core sudo
+RUN apt-get -y install xserver-xspice x11-xserver-utils locales apt-utils at-spi2-core
 RUN apt-get update && apt-get -y --no-install-recommends install xfce4
-RUN apt-get update && apt-get -y --no-install-recommends install xfce4-notifyd xfce4-statusnotifier-plugin xfce4-terminal xfce4-goodies gnome-icon-theme hicolor-icon-theme pulseaudio xfce4-pulseaudio-plugin pavucontrol
+RUN apt-get update && apt-get -y --no-install-recommends install xfce4-notifyd xfce4-statusnotifier-plugin \
+    xfce4-terminal xfce4-goodies xfce4-pulseaudio-plugin \
+    gnome-icon-theme hicolor-icon-theme pulseaudio pavucontrol sudo dnsutils libssl-dev \
+    libffi-dev net-tools  libnss3-tools curl wget dbus-x11 ca-certificates bzip2 \
+    fonts-liberation fonts-freefont-ttf fonts-dejavu 
+
 # sudo add-apt-repository ppa:papirus/papirus
 # sudo apt-get update
 # sudo apt-get install papirus-icon-theme

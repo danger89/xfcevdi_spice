@@ -27,7 +27,7 @@ if [ "$SUDO" != "NO" ]; then
 fi
 cd /home/$SPICE_USER
 
-# Pulse audio
+# Pulseaudio (https://github.com/ikreymer/spice-chrome/blob/master/entry_point.sh)
 mkdir /tmp/audio_fifo
 FIFO=/tmp/audio_fifo/audio.fifo
 chmod a+w /etc/pulse/client.conf
@@ -39,19 +39,13 @@ echo "load-module module-pipe-sink sink_name=fifo_output file=$FIFO format=s16 r
 
 # TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
-Xspice --port 5900 --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 
 sleep 1
 
 # Start DBUS with XFCE4 session
 # TODO: Later add also > /dev/null
 su user -c "DISPLAY=:1.0 dbus-launch --exit-with-session xfce4-session" & /usr/bin/bash
-
-
-# > /dev/null 2>&1
-
-# TODO:
-
 
 ### disable screensaver and power management
 # xset -dpms &
