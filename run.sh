@@ -26,6 +26,12 @@ if [ "$SUDO" != "NO" ]; then
         sed -i "s/^\(sudo:.*\)/\1$SPICE_USER/" /etc/group
 fi
 cd /home/$SPICE_USER
+#mkdir -p /home/$SPICE_USER/.config/xfce4/xfconf/xfce-perchannel-xml
+#mkdir -p /home/$SPICE_USER/.config/xfce4/terminal
+#cp -rf /root/terminalrc /home/$SPICE_USER/.config/xfce4/terminal/
+#cp -rf /root/xsettings.xml /home/$SPICE_USER/.config/xfce4/xfconf/xfce-perchannel-xml/
+
+# TODO: service dbus start
 
 # Pulseaudio (https://github.com/ikreymer/spice-chrome/blob/master/entry_point.sh)
 mkdir /tmp/audio_fifo

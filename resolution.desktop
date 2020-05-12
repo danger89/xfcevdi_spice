@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=xrandr
-Exec=/usr/bin/xrandr -s SPICE_RES 
-NoDisplay=true

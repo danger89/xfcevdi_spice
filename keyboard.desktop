@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=xrandr
-Exec=/usr/bin/setxkbmap  SPICE_KB
-NoDisplay=true
