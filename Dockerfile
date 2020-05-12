@@ -26,8 +26,8 @@ VOLUME /home
 COPY ./configs/spiceqxl.xorg.conf /etc/X11/
 COPY ./configs/resolution.desktop /etc/xdg/autostart/
 COPY ./configs/keyboard.desktop /etc/xdg/autostart/
-COPY ./configs/terminalrc /root/
-COPY ./configs/xsettings.xml /root/
+COPY ./configs/xfceboot.desktop /etc/xdg/autostart/
+COPY xfce_settings.sh /tmp/
 COPY run.sh	/root/
 
 EXPOSE 5900

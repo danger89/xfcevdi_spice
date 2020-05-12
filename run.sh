@@ -25,10 +25,14 @@ sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
 if [ "$SUDO" != "NO" ]; then
         sed -i "s/^\(sudo:.*\)/\1$SPICE_USER/" /etc/group
 fi
+chmod a+x /tmp/xfce_settings.sh
 cd /home/$SPICE_USER
-#mkdir -p /home/$SPICE_USER/.config/xfce4/xfconf/xfce-perchannel-xml
-#mkdir -p /home/$SPICE_USER/.config/xfce4/terminal
-#cp -rf /root/terminalrc /home/$SPICE_USER/.config/xfce4/terminal/
+
+# TODO:
+#  1. Add script to /root/
+#  2. Add autostart to /etc/xdg/autostart (pointing to that script)
+
+# cp -rf /root/terminalrc /home/$SPICE_USER/.config/xfce4/terminal/
 #cp -rf /root/xsettings.xml /home/$SPICE_USER/.config/xfce4/xfconf/xfce-perchannel-xml/
 
 # TODO: service dbus start
