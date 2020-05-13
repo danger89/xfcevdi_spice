@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=xrandr
-Exec=/usr/bin/setxkbmap  SPICE_KB
+Name=keyboard
+Exec=/usr/bin/setxkbmap -layout SPICE_KB_LAYOUT -variant SPICE_KB_VARIANT
 NoDisplay=true
 Terminal=false
 Categories=

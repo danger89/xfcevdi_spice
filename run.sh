@@ -9,7 +9,9 @@ SPICE_USER=${SPICE_USER:-"user"}
 SPICE_UID=${SPICE_UID:-"1000"}
 SPICE_GID=${SPICE_GID:-"1000"}
 SPICE_PASSWD=${SPICE_PASSWD:-"password"}
-SPICE_KB="us"
+SPICE_KB_LAYOUT=${SPICE_KB_LAYOUT:-"us"}
+SPICE_KB_VARIANT=${SPICE_KB_VARIANT:-"euro"}
+
 SUDO=${SUDO:-"user"}
 locale-gen $SPICE_LOCAL
 echo $TIMEZONE > /etc/timezone
@@ -18,8 +20,10 @@ echo "$SPICE_USER:$SPICE_PASSWD" | chpasswd
 sed -i "s|#Option \"SpicePassword\" \"\"|Option \"SpicePassword\" \"$SPICE_PASSWD\"|" /etc/X11/spiceqxl.xorg.conf
 unset SPICE_PASSWD
 update-locale LANG=$SPICE_LOCAL
-sed -i "s/XKBLAYOUT=.*/XKBLAYOUT=\"$SPICE_KB\"/" /etc/default/keyboard
-sed -i "s/SPICE_KB/$SPICE_KB/" /etc/xdg/autostart/keyboard.desktop
+sed -i "s/XKBLAYOUT=.*/XKBLAYOUT=\"$SPICE_KB_LAYOUT\"/" /etc/default/keyboard
+sed -i "s/XKBVARIANT=.*/XKBVARIANT=\"$SPICE_KB_VARIANT\"/" /etc/default/keyboard
+sed -i "s/SPICE_KB_LAYOUT/$SPICE_KB_LAYOUT/" /etc/xdg/autostart/keyboard.desktop
+sed -i "s/SPICE_KB_VARIANT/$SPICE_KB_VARIANT/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
 sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfceboot.desktop
 # add sudo group to user
@@ -32,6 +36,9 @@ chmod a+x /app/xfce_settings.sh
 cd /app/spice-html5
 mv spice.html index.html 2> /dev/null
 python3 -m http.server 8080 > /dev/null 2>&1 &
+
+# Workaround red-hat bug #1773148 in sudo
+echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Start dbus (is this the system dbus? and dbus-launch the session debug? Maybe wise to also use EXPORT blabla at the top of this script)
 #service dbus start

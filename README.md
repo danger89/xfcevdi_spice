@@ -33,7 +33,7 @@ If you username locally is `myusername` with UID `1000` and you want to map your
 
 There are several Spice clients availible under Linux.
 
-Either use on the command line: `remote-viewer spice://localhost:5900`
+Either use on the command line: `remote-viewer spice://localhost:5900` (install via: `sudo apt install virt-viewer`)
 
 Or you could use an application like: `Remmina`.
 
