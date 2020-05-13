@@ -30,13 +30,33 @@ If you username locally is `myusername` with UID `1000` and you want to map your
 
 ### Clients
 
-There are several Spice clients availible under Linux.
-
-Either use on the command line: `remote-viewer spice://localhost:5900` (install via: `sudo apt install virt-viewer`)
-
-Or you could use an application like: `Remmina`.
-
-Or use the Spice HTML5 client in your browser, go to: `http://localhost:8080`
+There are several Spice clients available under GNU/Linux.
 
 **Note:** The default username is `user`, with the password: `password`.
 
+### Virt-viewer (Recommended)
+Install the client via: `sudo apt install virt-viewer`.
+Then use the command-line: `remote-viewer spice://localhost:5900`
+
+You can also create a new file (eg. called `vdi`) with the content:
+
+```
+ [virt-viewer]
+ type=spice
+ host=localhost
+ port=5900
+ password=password
+```
+
+Then use it as follows: `remote-viewer vdi` (assuming the file is called `vdi` and you are within the same directory)
+
+#### Browser Client
+
+You can use the built-in Spice HTML5 client (within this docker image).
+
+Open it in your webbrowser (Firefox, Chrome), go to: `http://localhost:8080`.
+Don't forget to enter the password.
+
+### Remmina
+
+Use the another application called: `Remmina`.
