@@ -34,7 +34,7 @@ There are several Spice clients available under GNU/Linux.
 
 **Note:** The default username is `user`, with the password: `password`.
 
-### Virt-viewer (Recommended)
+#### Virt-viewer (Recommended)
 Install the client via: `sudo apt install virt-viewer`.
 Then use the command-line: `remote-viewer spice://localhost:5900`
 
