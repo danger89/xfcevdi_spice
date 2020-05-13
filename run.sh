@@ -26,9 +26,9 @@ sed -i "s/SPICE_KB_LAYOUT/$SPICE_KB_LAYOUT/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_KB_VARIANT/$SPICE_KB_VARIANT/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
 sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfceboot.desktop
-# add sudo group to user
+# add extra groups to user
 if [ "$SUDO" != "NO" ]; then
-        sed -i "s/^\(sudo:.*\)/\1$SPICE_USER/" /etc/group
+        usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
 fi
 chmod a+x /app/xfce_settings.sh
 
@@ -40,8 +40,8 @@ python3 -m http.server 8080 > /dev/null 2>&1 &
 # Workaround red-hat bug #1773148 in sudo
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
-# Start dbus (is this the system dbus? and dbus-launch the session debug? Maybe wise to also use EXPORT blabla at the top of this script)
-#service dbus start
+# Start system dbus
+service dbus start
 
 cd /home/$SPICE_USER
 

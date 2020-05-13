@@ -10,8 +10,7 @@ This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the o
 
 1. Install [Docker](https://www.docker.com/).
 2. Pull the images from Dockerhub directly: `docker pull danger89/xfcevdi`
-
-   (alternatively, you could build the image locally via: `docker build --tag danger89/xfcevdi:latest .`)
+3. *Alternatively:* you could instead build the image locally, via: `docker build --tag danger89/xfcevdi:latest .`
 
 ## Usage
 

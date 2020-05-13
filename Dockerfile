@@ -4,15 +4,14 @@ FROM ubuntu:focal
 LABEL maintainer="melroy@melroy.org"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:1.0
-# TODO: System dbus or session dbus? We need sound working..
-# ENV DBUS_SYSTEM_BUS_ADDRESS='unix:path=/var/host/dbus/system_bus_socket'
+ENV DISPLAY=:2.0
+ENV DBUS_SYSTEM_BUS_ADDRESS='unix:path=/var/run/dbus/system_bus_socket'
 
 WORKDIR /app
 
 RUN apt-get update && apt-get -y install software-properties-common
 RUN apt-get upgrade -y
-RUN apt-get -y install xserver-xspice x11-xserver-utils locales apt-utils at-spi2-core dialog spice-html5 websockify
+RUN apt-get -y --no-install-recommends install xserver-xspice x11-xserver-utils locales apt-utils at-spi2-core dialog spice-html5 websockify
 RUN apt-get update && apt-get -y --no-install-recommends install xfce4
 RUN add-apt-repository ppa:papirus/papirus
 RUN apt-get update && apt-get -y --no-install-recommends install xfce4-notifyd xfce4-statusnotifier-plugin \
@@ -23,8 +22,10 @@ RUN apt-get -y --no-install-recommends install fonts-ubuntu breeze-gtk-theme pap
     gnome-icon-theme hicolor-icon-theme
 # Additional applications
 RUN apt-get -y --no-install-recommends install firefox htop nano git
-RUN apt-get clean -y
+# Get latest Spice html5 client
 RUN git clone https://gitlab.freedesktop.org/spice/spice-html5 /app/spice-html5
+# Clean-up
+RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME /home
 
