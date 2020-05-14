@@ -11,6 +11,7 @@ SPICE_GID=${SPICE_GID:-"1000"}
 SPICE_PASSWD=${SPICE_PASSWD:-"password"}
 SPICE_KB_LAYOUT=${SPICE_KB_LAYOUT:-"us"}
 SPICE_KB_VARIANT=${SPICE_KB_VARIANT:-"euro"}
+SPICE_SOUND=${SPICE_SOUND:-false}
 
 SUDO=${SUDO:-"user"}
 locale-gen $SPICE_LOCAL
@@ -33,6 +34,18 @@ if [ "$SUDO" != "NO" ]; then
 fi
 chmod a+x /app/xfce_settings.sh
 
+if [ "$SPICE_SOUND" = true ] ; then
+        # Pulseaudio
+        mkdir /tmp/audio_fifo
+        chown $SPICE_USER.$SPICE_USER /tmp/audio_fifo
+        FIFO=/tmp/audio_fifo/audio.fifo
+
+        # Append the pipe module with Pulse Audio default file
+        echo "load-module module-pipe-sink sink_name=fifo file=$FIFO format=s16 rate=48000 channels=2" >> /app/default.pa
+else
+        # Disable audio
+        rm -rf /etc/xdg/autostart/sound.desktop
+fi
 # Start system dbus & syslog
 service rsyslog start
 service dbus start
@@ -47,14 +60,6 @@ echo "Set disable_coredump false" >> /etc/sudo.conf
 
 cd /home/$SPICE_USER
 
-# Pulseaudio (https://github.com/ikreymer/spice-chrome/blob/master/entry_point.sh)
-mkdir /tmp/audio_fifo
-chown $SPICE_USER.$SPICE_USER /tmp/audio_fifo
-FIFO=/tmp/audio_fifo/audio.fifo
-
-# Append the pipe module with Pulse Audio default file
-echo "load-module module-pipe-sink sink_name=fifo file=$FIFO format=s16 rate=48000 channels=2" >> /app/default.pa
-
 #chmod a+w /etc/pulse/client.conf
 #chmod a+w /etc/pulse/default.pa
 #echo "default-sink = fifo_output" >> /etc/pulse/client.conf
@@ -63,7 +68,11 @@ echo "load-module module-pipe-sink sink_name=fifo file=$FIFO format=s16 rate=480
 
 # TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
-Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+if [ "$SPICE_SOUND" = true ] ; then
+        Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+else
+        Xspice --port 5900 --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+fi
 
 sleep 1
 
