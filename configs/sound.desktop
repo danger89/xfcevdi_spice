@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=sound
+Exec=/app/sound.sh SPICE_USER
+NoDisplay=true
+Terminal=false
+Categories=
