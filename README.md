@@ -14,19 +14,21 @@ This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the o
 
 ## Usage
 
-Run VDI with Spice port (port 5900), HTTP server (8080) with websockify (5959):
+Run VDI with Spice port (port 5900), HTTP server (8080) with websockify (5959) in background (daemon):
 
-`docker run -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
+`docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
 
 *Note:* If you won't use the Spice HTML5 client, port `5900` would be sufficient enough.
 
-Or run with terminal access open:
+Or run with terminal access open (in forground):
 
-`docker run -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
+`docker run --shm-size 2g -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
 
-If you username locally is `myusername` with UID `1000` and you want to map your /home/myusername in Docker, try:
+Or run as daemon, map your /home/myusername, set your username (`john`) with UID `1000`, change password, change resolution and enable audio:
 
-`docker run -p 5900:5900 -p 8080:8080 -p 5959:5959 -e SPICE_USER=myusername -e SPICE_UID=1000 -v /home/myusername:/home/myusername -e SPICE_PASSWD="azerty" -e SPICE_LOCAL="fr_FR.UTF-8" -e SPICE_RES="1366x768" danger89/xfcevdi:1.0`
+`docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 -v /home/john:/home/john -e SPICE_USER=john -e SPICE_UID=1000 -e SPICE_RES="1366x768" -e SPICE_PASSWD="azerty" -e SPICE_SOUND="true" danger89/xfcevdi:1.0`
+
+*Note:* `--shm-size 2g` option is to prevent Firefox from crashing (due to high memory usage). Alternatively, you can try to mount it on your host: `-v /dev/shm:/dev/shm`.
 
 ### Clients
 

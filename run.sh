@@ -26,25 +26,30 @@ sed -i "s/XKBVARIANT=.*/XKBVARIANT=\"$SPICE_KB_VARIANT\"/" /etc/default/keyboard
 sed -i "s/SPICE_KB_LAYOUT/$SPICE_KB_LAYOUT/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_KB_VARIANT/$SPICE_KB_VARIANT/" /etc/xdg/autostart/keyboard.desktop
 sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
-sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfceboot.desktop
+sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfcesettings.desktop
+sed -i "s/SPICE_SOUND/$SPICE_SOUND/" /etc/xdg/autostart/xfcesettings.desktop
 sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/sound.desktop
 # add extra groups to user
 if [ "$SUDO" != "NO" ]; then
-        usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
+  usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
 fi
 chmod a+x /app/xfce_settings.sh
 
-if [ "$SPICE_SOUND" = true ] ; then
-        # Pulseaudio
-        mkdir /tmp/audio_fifo
-        chown $SPICE_USER.$SPICE_USER /tmp/audio_fifo
-        FIFO=/tmp/audio_fifo/audio.fifo
+# Prepare xauth
+touch /home/$SPICE_USER/.Xauthority
+chown $SPICE_USER:$SPICE_USER /home/$SPICE_USER/.Xauthority
 
-        # Append the pipe module with Pulse Audio default file
-        echo "load-module module-pipe-sink sink_name=fifo file=$FIFO format=s16 rate=48000 channels=2" >> /app/default.pa
+if [ "$SPICE_SOUND" = true ] ; then
+  # Pulseaudio
+  mkdir /tmp/audio_fifo
+  chown $SPICE_USER.$SPICE_USER /tmp/audio_fifo
+  FIFO=/tmp/audio_fifo/audio.fifo
+
+  # Append the pipe module with Pulse Audio default file
+  echo "load-module module-pipe-sink sink_name=fifo file=$FIFO format=s16 rate=48000 channels=2" >> /app/default.pa
 else
-        # Disable audio
-        rm -rf /etc/xdg/autostart/sound.desktop
+  # Disable audio
+  rm -rf /etc/xdg/autostart/sound.desktop
 fi
 # Start system dbus & syslog
 service rsyslog start
@@ -69,9 +74,9 @@ cd /home/$SPICE_USER
 # TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
 if [ "$SPICE_SOUND" = true ] ; then
-        Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+  Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 else
-        Xspice --port 5900 --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+  Xspice --port 5900 --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 fi
 
 sleep 1
