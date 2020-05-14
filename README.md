@@ -1,6 +1,6 @@
 # Ubuntu XFCE VDI (SPICE protocol)
 
-This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the open-source [Spice protocol](https://en.wikipedia.org/wiki/Simple_Protocol_for_Independent_Computing_Environments).
+This repository contains Ubuntu 20 (Focal Fossa) Desktop with XFCE4 for Docker. By using the open-source [Spice protocol](https://en.wikipedia.org/wiki/Simple_Protocol_for_Independent_Computing_Environments).
 
 ## Base Docker Image
 
@@ -9,24 +9,30 @@ This repository contains Ubuntu 20 Desktop with XFCE4 for Docker. By using the o
 ## Installation
 
 1. Install [Docker](https://www.docker.com/).
-2. Pull the images from Dockerhub directly: `docker pull danger89/xfcevdi`
+2. Pull the images from [Docker Hub](https://hub.docker.com/r/danger89/xfcevdi) directly: `docker pull danger89/xfcevdi`
 3. *Alternatively:* you could instead build the image locally, via: `docker build --tag danger89/xfcevdi:latest .`
 
 ## Usage
 
 Run VDI with Spice port (port 5900), HTTP server (8080) with websockify (5959) in background (daemon):
 
-`docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
+```sh
+docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest
+```
 
 *Note:* If you won't use the Spice HTML5 client, port `5900` would be sufficient enough.
 
 Or run with terminal access open (in forground):
 
-`docker run --shm-size 2g -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest`
+```sh
+docker run --shm-size 2g -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest
+```
 
 Or run as daemon, map your /home/myusername, set your username (`john`) with UID `1000`, change password, change resolution and enable audio:
 
-`docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 -v /home/john:/home/john -e SPICE_USER=john -e SPICE_UID=1000 -e SPICE_RES="1366x768" -e SPICE_PASSWD="azerty" -e SPICE_SOUND="true" danger89/xfcevdi:1.0`
+```sh
+docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 -v /home/john:/home/john -e SPICE_USER=john -e SPICE_UID=1000 -e SPICE_RES="1366x768" -e SPICE_PASSWD="azerty" -e SPICE_SOUND="true" danger89/xfcevdi:1.0
+```
 
 *Note:* `--shm-size 2g` option is to prevent Firefox from crashing (due to high memory usage). Alternatively, you can try to mount it on your host: `-v /dev/shm:/dev/shm`.
 

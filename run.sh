@@ -65,12 +65,6 @@ echo "Set disable_coredump false" >> /etc/sudo.conf
 
 cd /home/$SPICE_USER
 
-#chmod a+w /etc/pulse/client.conf
-#chmod a+w /etc/pulse/default.pa
-#echo "default-sink = fifo_output" >> /etc/pulse/client.conf
-#echo "load-module module-x11-publish" >> /etc/pulse/default.pa
-#echo "load-module module-pipe-sink sink_name=fifo_output file=$FIFO format=s16 rate=48000 channels=2" >> /etc/pulse/default.pa
-
 # TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
 if [ "$SPICE_SOUND" = true ] ; then
@@ -99,11 +93,5 @@ export XDG_CONFIG_DIRS=/etc/xdg/xdg-xfce:/etc/xdg:/etc/xdg
 #XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
 
 # Start DBUS session with XFCE4 session
-# TODO: Later add also > /dev/null
+# TODO: Later add also > /dev/null or add to supervisor
 su $SPICE_USER -c "DISPLAY=$DISPLAY dbus-launch --exit-with-session xfce4-session"
-
-### disable screensaver and power management
-# xset -dpms &
-# xset s noblank &
-# xset s off
-
