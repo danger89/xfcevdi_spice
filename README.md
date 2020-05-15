@@ -22,7 +22,7 @@ docker run -d --shm-size 2g -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfce
 
 *Note:* If you won't use the Spice HTML5 client, port `5900` would be sufficient enough.
 
-Or run with terminal access open (in forground):
+Or run with terminal access open (in foreground):
 
 ```sh
 docker run --shm-size 2g -it -p 5900:5900 -p 8080:8080 -p 5959:5959 danger89/xfcevdi:latest
