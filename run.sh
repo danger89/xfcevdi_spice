@@ -70,14 +70,12 @@ cd /home/$SPICE_USER
 # Workaround red-hat bug #1773148 in sudo
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
-# TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
 if [ "$SPICE_SOUND" = true ] ; then
-  Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+  Xspice --port 5900 --audio-fifo-dir=/tmp/audio_fifo --auto --vdagent --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 else
-  Xspice --port 5900 --disable-ticketing $DISPLAY > /dev/null 2>&1 &
+  Xspice --port 5900 --auto --vdagent --disable-ticketing $DISPLAY > /dev/null 2>&1 &
 fi
-
 sleep 1
 
 # Enable WebSockify for SPICE HTML5 client
@@ -97,6 +95,10 @@ export XDG_CURRENT_DESKTOP=XFCE
 export XDG_CONFIG_DIRS=/etc/xdg/xdg-xfce:/etc/xdg
 export XDG_RUNTIME_DIR=/run/user/$SPICE_UID
 
+
 # Start DBUS session with XFCE4 session
-# TODO: Later add also > /dev/null or add to supervisor
-su $SPICE_USER -c "DISPLAY=$DISPLAY dbus-launch --exit-with-session xfce4-session"
+# TODO: Use supervisor
+su $SPICE_USER -c "DISPLAY=$DISPLAY dbus-launch --exit-with-session xfce4-session" > /dev/null 2>&1 &
+
+echo "set -g mouse on" >> /home/$SPICE_USER/.tmux.conf
+su $SPICE_USER -c tmux 
