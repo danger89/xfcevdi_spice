@@ -12,12 +12,26 @@ SPICE_PASSWD=${SPICE_PASSWD:-"password"}
 SPICE_KB_LAYOUT=${SPICE_KB_LAYOUT:-"us"}
 SPICE_KB_VARIANT=${SPICE_KB_VARIANT:-"euro"}
 SPICE_SOUND=${SPICE_SOUND:-false}
+PASS_NEEDED=${PASS_NEEDED:-"false"}
+SUDO=${SUDO:-false}
 
-SUDO=${SUDO:-"user"}
+# Generate new locale & set timezone
 locale-gen $SPICE_LOCAL
 echo $TIMEZONE > /etc/timezone
+
+# Create user and set password
 useradd -ms /bin/bash -u $SPICE_UID $SPICE_USER
 echo "$SPICE_USER:$SPICE_PASSWD" | chpasswd
+# Add new user to several groups
+if [ "$SUDO" = false ] ; then
+  usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
+fi
+if [ "$PASS_NEEDED" = false ] ; then
+  # No password needed
+  echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+fi
+
+# Adapt several files
 sed -i "s|#Option \"SpicePassword\" \"\"|Option \"SpicePassword\" \"$SPICE_PASSWD\"|" /etc/X11/spiceqxl.xorg.conf
 unset SPICE_PASSWD
 update-locale LANG=$SPICE_LOCAL
@@ -29,13 +43,9 @@ sed -i "s/SPICE_RES/$SPICE_RES/" /etc/xdg/autostart/resolution.desktop
 sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/xfcesettings.desktop
 sed -i "s/SPICE_SOUND/$SPICE_SOUND/" /etc/xdg/autostart/xfcesettings.desktop
 sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/sound.desktop
-# add extra groups to user
-if [ "$SUDO" != "NO" ]; then
-  usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
-fi
 
+# Enable PulseAudio
 if [ "$SPICE_SOUND" = true ] ; then
-  # Pulseaudio
   mkdir /tmp/audio_fifo
   chown $SPICE_USER.$SPICE_USER /tmp/audio_fifo
   FIFO=/tmp/audio_fifo/audio.fifo
@@ -46,6 +56,7 @@ else
   # Disable audio
   rm -rf /etc/xdg/autostart/sound.desktop
 fi
+
 # Start system dbus & syslog
 service rsyslog start
 service dbus start
@@ -54,11 +65,10 @@ service dbus start
 cd /app/spice-html5
 mv spice.html index.html 2> /dev/null
 python3 -m http.server 8080 > /dev/null 2>&1 &
+cd /home/$SPICE_USER
 
 # Workaround red-hat bug #1773148 in sudo
 echo "Set disable_coredump false" >> /etc/sudo.conf
-
-cd /home/$SPICE_USER
 
 # TODO: --vdagent?
 # Start both X server with Spice Server (don't ask for login)
@@ -73,11 +83,12 @@ sleep 1
 # Enable WebSockify for SPICE HTML5 client
 websockify 5959 localhost:5900 > /dev/null 2>&1 &
 
-# Export some env variables
-# TODO: Should this be automated via: dbus-update-activation-environment or xdg-user-dirs-update
-# Well we don't use systemd, so what now?
+# Create user runtime directory
 mkdir -p /run/user/$SPICE_UID
 chown $SPICE_USER.$SPICE_USER /run/user/$SPICE_UID
+
+# Export some env variables
+export HOME=/home/$SPICE_USER
 export DESKTOP_SESSION=xfce
 export XDG_SESSION_TYPE=x11
 export XDG_DATA_DIRS=/usr/share/xfce4:/usr/local/share:/usr/share
