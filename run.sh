@@ -33,11 +33,6 @@ sed -i "s/SPICE_USER/$SPICE_USER/" /etc/xdg/autostart/sound.desktop
 if [ "$SUDO" != "NO" ]; then
   usermod -a -G sudo,adm,audio,video,plugdev $SPICE_USER
 fi
-chmod a+x /app/xfce_settings.sh
-
-# Prepare xauth
-touch /home/$SPICE_USER/.Xauthority
-chown $SPICE_USER:$SPICE_USER /home/$SPICE_USER/.Xauthority
 
 if [ "$SPICE_SOUND" = true ] ; then
   # Pulseaudio
@@ -75,22 +70,21 @@ fi
 
 sleep 1
 
+# Enable WebSockify for SPICE HTML5 client
 websockify 5959 localhost:5900 > /dev/null 2>&1 &
 
 # Export some env variables
-# TODO: Should this be automated via: dbus-update-activation-environment?
+# TODO: Should this be automated via: dbus-update-activation-environment or xdg-user-dirs-update
+# Well we don't use systemd, so what now?
+mkdir -p /run/user/$SPICE_UID
+chown $SPICE_USER.$SPICE_USER /run/user/$SPICE_UID
 export DESKTOP_SESSION=xfce
 export XDG_SESSION_TYPE=x11
 export XDG_DATA_DIRS=/usr/share/xfce4:/usr/local/share:/usr/share
 export XDG_SESSION_DESKTOP=xfce
 export XDG_CURRENT_DESKTOP=XFCE
-export XDG_CONFIG_DIRS=/etc/xdg/xdg-xfce:/etc/xdg:/etc/xdg
-# Missing runtime dir? User ID 1000 is missing...
-# XDG_RUNTIME_DIR=/run/user/1000
-# Que?
-#XDG_SEAT=seat0
-#XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
-#XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+export XDG_CONFIG_DIRS=/etc/xdg/xdg-xfce:/etc/xdg
+export XDG_RUNTIME_DIR=/run/user/$SPICE_UID
 
 # Start DBUS session with XFCE4 session
 # TODO: Later add also > /dev/null or add to supervisor

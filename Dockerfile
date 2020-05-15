@@ -4,14 +4,14 @@ FROM ubuntu:focal
 LABEL maintainer="melroy@melroy.org"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:2.0
+ENV DISPLAY=:1.0
 ENV DBUS_SYSTEM_BUS_ADDRESS='unix:path=/var/run/dbus/system_bus_socket'
 
 WORKDIR /app
 
-RUN apt-get update && apt-get -y install software-properties-common
+RUN apt-get update && apt-get -y install software-properties-common apt-utils
 RUN apt-get upgrade -y
-RUN apt-get -y --no-install-recommends install xserver-xspice x11-xserver-utils locales apt-utils at-spi2-core dialog spice-html5 websockify
+RUN apt-get -y --no-install-recommends install xserver-xspice x11-xserver-utils locales at-spi2-core dialog spice-html5 websockify
 RUN apt-get update && apt-get -y --no-install-recommends install xfce4 supervisor
 RUN add-apt-repository ppa:papirus/papirus
 RUN apt-get update && apt-get -y --no-install-recommends install xfce4-notifyd xfce4-statusnotifier-plugin \
@@ -25,7 +25,7 @@ RUN apt-get -y --no-install-recommends install fonts-ubuntu fonts-dejavu-core br
 # Get latest Spice html5 client
 RUN git clone https://gitlab.freedesktop.org/spice/spice-html5 /app/spice-html5
 # Additional applications
-RUN apt-get -y --no-install-recommends install firefox htop nano gnome-calculator
+RUN apt-get -y --no-install-recommends install firefox htop nano gnome-calculator xed
 # Clean-up
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
 
