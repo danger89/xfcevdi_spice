@@ -17,7 +17,7 @@ RUN apt-get -y --no-install-recommends install xserver-xspice ffmpeg sudo locale
     && apt-get -y --no-install-recommends install xfce4 \
     && apt-get -y --no-install-recommends install xfdesktop4 xfce4-appfinder tumbler xfce4-terminal xfce4-clipman-plugin xfce4-screenshooter xfce4-notifyd \
     && apt-get -y --no-install-recommends install xfce4-pulseaudio-plugin xfce4-statusnotifier-plugin \
-    && apt-get -y --no-install-recommends install pulseaudio pavucontrol git dnsutils libssl-dev libffi-dev dbus-x11 rsyslog net-tools libnss3-tools wget ca-certificates bzip2 sudo curl zip xdg-utils xz-utils util-linux
+    && apt-get -y --no-install-recommends install pulseaudio pavucontrol git dnsutils libssl-dev libffi-dev dbus-x11 rsyslog net-tools libnss3-tools wget ca-certificates bzip2 sudo curl zip xdg-utils xz-utils util-linux x11-utils
 RUN add-apt-repository ppa:papirus/papirus
 RUN apt-get update \
     && apt-get -y --no-install-recommends install fonts-ubuntu fonts-dejavu-core breeze-gtk-theme papirus-icon-theme gnome-icon-theme hicolor-icon-theme
