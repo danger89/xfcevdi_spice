@@ -25,7 +25,7 @@ RUN apt-get -y --no-install-recommends install fonts-ubuntu fonts-dejavu-core br
 # Get latest Spice html5 client
 RUN git clone https://gitlab.freedesktop.org/spice/spice-html5 /app/spice-html5
 # Additional applications
-RUN apt-get -y --no-install-recommends install firefox htop nano gnome-calculator xed
+RUN apt-get -y --no-install-recommends install firefox htop nano gnome-calculator mousepad
 # Clean-up
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
 
