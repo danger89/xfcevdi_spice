@@ -11,6 +11,8 @@ This repository contains Ubuntu 20 (Focal Fossa) Desktop with XFCE4 for Docker. 
 1. Install [Docker](https://www.docker.com/).
 2. Pull the images from [Docker Hub](https://hub.docker.com/r/danger89/xfcevdi) directly: `docker pull danger89/xfcevdi`
 3. *Alternatively:* you could instead build the image locally, via: `docker build --tag danger89/xfcevdi:latest .`
+    
+    Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi:latest .`
 
 ## Usage
 
