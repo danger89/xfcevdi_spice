@@ -1,3 +1,7 @@
+# Obsolete
+
+I no longer use the SPICE protocol anymore. Instead use the X2Go protocol image, see: https://github.com/danger89/xfcevdi
+
 # Ubuntu XFCE VDI (SPICE protocol)
 
 This repository contains Ubuntu 20 (Focal Fossa) Desktop with XFCE4 for Docker. By using the open-source [Spice protocol](https://en.wikipedia.org/wiki/Simple_Protocol_for_Independent_Computing_Environments).
